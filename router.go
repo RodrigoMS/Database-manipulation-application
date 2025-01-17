@@ -19,29 +19,19 @@ var (
 	mutex sync.RWMutex
 )
 
-func Routes() {
-	http.HandleFunc("/user", userHandler)
-	http.HandleFunc("/user/", userHandler)
-	http.HandleFunc("/users", usersHandler)
+func routes() *http.ServeMux {
+	router := http.NewServeMux()
+
+	router.HandleFunc("GET /user/", controllers.GetUser)
+	router.HandleFunc("POST /user", controllers.PostUser)
+	router.HandleFunc("PUT /user", controllers.PutUser)
+	router.HandleFunc("DELETE /user", controllers.DeleteUser)
+
+	router.HandleFunc("GET /users", controllers.GetUsers)
+	
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusBadRequest)
+	})
+
+	return router
 }
-
-func userHandler(w http.ResponseWriter, r *http.Request) {
-
-	mutex.RLock()
-	defer mutex.RUnlock()
-
-	handler, ok := userHandlers[r.Method];
-
-	if ok {
-		handler(w, r)
-
-	} else {
-		// Status 405 - Método não suportado.
-		http.Error(w, "Método não suportado", http.StatusMethodNotAllowed)
-	}
-}
-
-func usersHandler(w http.ResponseWriter, r *http.Request) {
-	controllers.GetUsers(w, r)
-}
-

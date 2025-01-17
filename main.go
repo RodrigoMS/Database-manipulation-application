@@ -9,7 +9,7 @@ import (
 func main() {
 	database.Connection()
 
-	Routes()
+	router := routes()
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", router)
 }

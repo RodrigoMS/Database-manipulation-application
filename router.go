@@ -19,7 +19,7 @@ var (
 	mutex sync.RWMutex
 )
 
-func Routes() {
+func routes() {
 	http.HandleFunc("/user", userHandler)
 	http.HandleFunc("/user/", userHandler)
 	http.HandleFunc("/users", usersHandler)

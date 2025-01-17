@@ -2,21 +2,8 @@ package main
 
 import (
 	"net/http"
-	"sync"
 
 	"github.com/RodrigoMS/app/cmd/controllers"
-)
-
-var (
-	userHandlers = map[string]func(http.ResponseWriter, *http.Request) {
-		"GET":    controllers.GetUser,
-		"POST":   controllers.PostUser,
-		"PUT":    controllers.PutUser,
-		"DELETE": controllers.DeleteUser,
-		//"PATCH":  func() { models.GetUser() },*/
-	}
-
-	mutex sync.RWMutex
 )
 
 func routes() *http.ServeMux {

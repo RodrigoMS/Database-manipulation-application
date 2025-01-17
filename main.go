@@ -9,7 +9,7 @@ import (
 func main() {
 	database.Connection()
 
-	routes()
+	Routes()
 
 	http.ListenAndServe(":8080", nil)
 }

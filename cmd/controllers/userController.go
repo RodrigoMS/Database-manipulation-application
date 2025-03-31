@@ -19,7 +19,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	parts := strings.Split(r.URL.Path, "/")
 	if len(parts) < 3 {
-		view.Response400(w, nil)
+		view.HandleNotFound(w, nil)
 		return
 	}
 
@@ -32,16 +32,16 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		//log.Printf("Erro em userModel.go: %v", err)
 
 		//view.Error(w, r)
-		view.Response400(w, err)
+		view.HandleNotFound(w, err)
 		return
 	}
 
 	if user == nil {
-		view.Response400(w, nil)
+		view.HandleNotFound(w, nil)
 		return
 	}
 
-	view.Response200(w, user)
+	view.HandleSuccess(w, user)
 }
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +51,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	view.Response200(w, users)
+	view.HandleSuccess(w, users)
 }
 
 func PostUser(w http.ResponseWriter, r *http.Request) {
@@ -59,7 +59,7 @@ func PostUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
-		view.Response400(w, err)
+		view.HandleNotFound(w, err)
 		return
 	}
 
@@ -72,7 +72,7 @@ func PostUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	view.Response200(w, user)
+	view.HandleResourceCreated(w, user)
 }
 
 func PutUser(w http.ResponseWriter, r *http.Request) {
@@ -80,7 +80,7 @@ func PutUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
-		view.Response400(w, err)
+		view.HandleNotFound(w, err)
 		return
 	}
 
@@ -93,7 +93,7 @@ func PutUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	view.Response200(w, user)
+	view.HandleSuccess(w, user)
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
@@ -101,7 +101,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
-		view.Response400(w, err)
+		view.HandleNotFound(w, err)
 		return
 	}
 
@@ -115,7 +115,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	view.Response204(w)
+	view.HandleNoContent(w)
 }
 
 // gravar logs (ver como se faz)

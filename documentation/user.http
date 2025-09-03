@@ -4,7 +4,7 @@ GET http://localhost:8080/users
 
 ###
 
-GET http://localhost:8080/user/1
+GET http://localhost:8080/user/b910c8aa-a586-4a3c-8caf-4663e4d2f4a6
 
 ###
 
@@ -23,7 +23,7 @@ PUT http://localhost:8080/user HTTP/1.1
 content-type: application/json
 
 {
-    "id": "50",
+    "id": "b910c8aa-a586-4a3c-8caf-4663e4d2f4a6",
     "name": "User RMS",
     "email": "rms@app.com",
     "password": "123456789"
@@ -35,5 +35,5 @@ DELETE http://localhost:8080/user HTTP/1.1
 content-type: application/json
 
 {
-    "id": "1"
+    "id": "b910c8aa-a586-4a3c-8caf-4663e4d2f4a6"
 }

@@ -1,13 +1,13 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/RodrigoMS/app/cmd/models"
 	"github.com/RodrigoMS/app/cmd/views"
+	"github.com/RodrigoMS/app/pkg/utils"
 )
 
 
@@ -59,10 +59,10 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 func PostUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
-	err := json.NewDecoder(r.Body).Decode(&user)
+	user, err := utils.ReadJSON[models.User](r.Body)
 	if err != nil {
-		views.HandleNotFound(w, nil)
-		return
+			views.HandleNotFound(w, nil)
+			return
 	}
 
 	// Lógica de validação dos dados
@@ -80,10 +80,10 @@ func PostUser(w http.ResponseWriter, r *http.Request) {
 func PutUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
-	err := json.NewDecoder(r.Body).Decode(&user)
+	user, err := utils.ReadJSON[models.User](r.Body)
 	if err != nil {
-		views.HandleNotFound(w, nil)
-		return
+			views.HandleNotFound(w, nil)
+			return
 	}
 
 	// Lógica de validação dos dados
@@ -101,10 +101,10 @@ func PutUser(w http.ResponseWriter, r *http.Request) {
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
-	err := json.NewDecoder(r.Body).Decode(&user)
+	user, err := utils.ReadJSON[models.User](r.Body)
 	if err != nil {
-		views.HandleNotFound(w, nil)
-		return
+			views.HandleNotFound(w, nil)
+			return
 	}
 
 	// Lógica de validação dos dados

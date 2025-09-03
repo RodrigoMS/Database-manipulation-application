@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/RodrigoMS/app/cmd/models"
@@ -25,10 +24,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	idString := parts[2]
-	id, _ := strconv.ParseInt(idString, 10, 64)
-
-	user, err := models.ReadUser(id)
+	user, err := models.ReadUser(parts[2])
 
 	if err != nil {
 		fmt.Println("Erro em userModel.go: \n", err)
@@ -93,10 +89,7 @@ func PutUser(w http.ResponseWriter, r *http.Request) {
 	// Lógica de validação dos dados
 	// ...
 
-	idString := user.ID
-	id, _ := strconv.ParseInt(idString, 10, 64)
-
-	user, err = models.UpdateUser(id, user.Name, user.Email, user.Password)
+	user, err = models.UpdateUser(user.ID, user.Name, user.Email, user.Password)
 	if err != nil {
 		views.HandleInternalServerError(w, "Não foi possível atualizar o cadastro. Tente novamente mais tarde.")
 		return
@@ -117,10 +110,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	// Lógica de validação dos dados
 	// ...
 
-	idString := user.ID
-	id, _ := strconv.ParseInt(idString, 10, 64)
-
-	err = models.DeleteUser(id)
+	err = models.DeleteUser(user.ID)
 
 	if err != nil {
 		views.HandleInternalServerError(w, "Erro ao excluir o usuário. Verifique se ele existe ou tente novamente em instantes.")

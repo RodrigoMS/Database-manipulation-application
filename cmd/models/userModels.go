@@ -53,7 +53,7 @@ func ReadAllUsers() ([]User, error) {
     return users, nil
 }
 
-func ReadUser(id int64) (*User, error) {
+func ReadUser(id string) (*User, error) {
     var user User
 
     err := database.SQL.QueryRow(
@@ -68,7 +68,7 @@ func ReadUser(id int64) (*User, error) {
     return &user, nil
 }
 
-func UpdateUser(id int64, name, email, password string) (User, error) {
+func UpdateUser(id string, name, email, password string) (User, error) {
     var user User
 
     err := database.SQL.QueryRow(
@@ -82,7 +82,7 @@ func UpdateUser(id int64, name, email, password string) (User, error) {
     return user, err
 }
 
-func DeleteUser(id int64) error {
+func DeleteUser(id string) error {
     var exists bool
     err := database.SQL.QueryRow(
         `SELECT EXISTS (SELECT 1 FROM "user" WHERE id = $1)`, id,

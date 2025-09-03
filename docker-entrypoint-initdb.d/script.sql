@@ -23,7 +23,7 @@ ALTER DATABASE app WITH CONNECTION LIMIT = 25;
 \c app
 
 CREATE TABLE IF NOT EXISTS "user" (
-    id BIGSERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL CHECK (char_length(name) >= 2),
     email VARCHAR(255) UNIQUE NOT NULL CHECK (position('@' IN email) > 1),
     active BOOLEAN NOT NULL DEFAULT FALSE,

@@ -1,14 +1,15 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/RodrigoMS/app/cmd/models"
-	"github.com/RodrigoMS/app/cmd/view"
+	"github.com/RodrigoMS/app/cmd/views"
+	"github.com/RodrigoMS/app/pkg/utils"
 )
+
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	// Lógica do controlador aqui
@@ -19,7 +20,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	parts := strings.Split(r.URL.Path, "/")
 	if len(parts) < 3 {
-		view.HandleNotFound(w, nil)
+		views.HandleNotFound(w, nil)
 		return
 	}
 
@@ -32,16 +33,16 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		//log.Printf("Erro em userModel.go: %v", err)
 
 		//view.Error(w, r)
-		view.HandleNotFound(w, err)
+		views.HandleNotFound(w, nil)
 		return
 	}
 
 	if user == nil {
-		view.HandleNotFound(w, nil)
+		views.HandleNotFound(w, nil)
 		return
 	}
 
-	view.HandleSuccess(w, user)
+	views.HandleSuccess(w, user)
 }
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
@@ -51,78 +52,70 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	view.HandleSuccess(w, users)
+	views.HandleSuccess(w, users)
 }
+
 
 func PostUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
-	err := json.NewDecoder(r.Body).Decode(&user)
+	user, err := utils.ReadJSON[models.User](r.Body)
 	if err != nil {
-		view.HandleNotFound(w, err)
-		return
+			views.HandleNotFound(w, nil)
+			return
 	}
 
 	// Lógica de validação dos dados
 	// ...
 
-	user, err = models.CreateUser(user.Email, user.Password)
+	user, err = models.CreateUser(user.Name, user.Email, user.Password)
 	if err != nil {
-		view.Response500(w, err)
+		views.HandleInternalServerError(w, "Não foi possível concluir o cadastro. Tente novamente mais tarde.")
 		return
 	}
 
-	view.HandleResourceCreated(w, user)
+	views.HandleResourceCreated(w, user)
 }
 
 func PutUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
-	err := json.NewDecoder(r.Body).Decode(&user)
+	user, err := utils.ReadJSON[models.User](r.Body)
 	if err != nil {
-		view.HandleNotFound(w, err)
-		return
+			views.HandleNotFound(w, nil)
+			return
 	}
 
 	// Lógica de validação dos dados
 	// ...
 
-	user, err = models.UpdateUser(user.Email, user.Password, user.ID)
+	user, err = models.UpdateUser(user.ID, user.Name, user.Email, user.Password)
 	if err != nil {
-		view.Response500(w, err)
+		views.HandleInternalServerError(w, "Não foi possível atualizar o cadastro. Tente novamente mais tarde.")
 		return
 	}
 
-	view.HandleSuccess(w, user)
+	views.HandleSuccess(w, user)
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
-	err := json.NewDecoder(r.Body).Decode(&user)
+	user, err := utils.ReadJSON[models.User](r.Body)
 	if err != nil {
-		view.HandleNotFound(w, err)
-		return
+			views.HandleNotFound(w, nil)
+			return
 	}
 
 	// Lógica de validação dos dados
 	// ...
 
 	err = models.DeleteUser(user.ID)
-	fmt.Println(err)
+
 	if err != nil {
-		view.Response500(w, err)
+		views.HandleInternalServerError(w, "Erro ao excluir o usuário. Verifique se ele existe ou tente novamente em instantes.")
 		return
 	}
 
-	view.HandleNoContent(w)
+	views.HandleNoContent(w)
 }
-
-// gravar logs (ver como se faz)
-/*
-logFile, err := os.OpenFile("meuLog.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-if err != nil {
-    log.Fatal(err)
-}
-log.SetOutput(logFile)
-*/

@@ -16,95 +16,88 @@ import (
 	return user
 }*/
 
-func CreateUser(email, password string) (User, error) {
-	var user User
+func CreateUser(name, email, password string) (User, error) {
+    var user User
 
-	err := database.SQL.QueryRow(
-		"INSERT INTO \"user\" (email, password) VALUES ($1, $2) RETURNING id, email", email, password,
-	).Scan(&user.ID, &user.Email)
+    err := database.SQL.QueryRow(
+        `INSERT INTO "user" (name, email, password)
+           VALUES ($1, $2, $3)
+         RETURNING id, name, email, active`,
+        name, email, password,
+    ).Scan(&user.ID, &user.Name, &user.Email, &user.Active)
 
-	// Inserir e retornas o ID do novo registro - Somente no PostgreSQL:
-	// INSERT INTO User (email, password) VALUES ($1, $2) RETURNING id
-
-	// Para o MySQL esta mesma função será
-	// INSERT INTO User (email, password) VALUES (?, ?)
-	// SELECT LAST_INSERT_ID();
-
-	return user, err
+    return user, err
 }
 
 func ReadAllUsers() ([]User, error) {
-	rows, err := database.SQL.Query("SELECT id, email, password FROM \"user\"")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
+    rows, err := database.SQL.Query(`SELECT id, name, email, active FROM "user"`)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
 
-	var users []User
-	for rows.Next() {
-		var u User
-		err = rows.Scan(&u.ID, &u.Email, &u.Password)
-		if err != nil {
-			return nil, err
-		}
-		users = append(users, u)
-	}
+    var users []User
+    for rows.Next() {
+        var u User
+        err = rows.Scan(&u.ID, &u.Name, &u.Email, &u.Active)
+        if err != nil {
+            return nil, err
+        }
+        users = append(users, u)
+    }
 
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-	
-	return users, nil
+    if err = rows.Err(); err != nil {
+        return nil, err
+    }
+
+    return users, nil
 }
 
 func ReadUser(id string) (*User, error) {
-	var user User
+    var user User
 
-	err := database.SQL.QueryRow(
-		"SELECT id, email, password FROM \"user\" WHERE id = $1", id,
-	).Scan(
-		&user.ID, &user.Email, &user.Password,
-	)
+    err := database.SQL.QueryRow(
+        `SELECT id, name, email, active FROM "user" WHERE id = $1`, id,
+    ).Scan(&user.ID, &user.Name, &user.Email, &user.Active)
 
-	if err == sql.ErrNoRows {
-		return nil, nil
-	} else if err != nil {
-		return nil, err
-	}
-	return &user, nil
+    if err == sql.ErrNoRows {
+        return nil, nil
+    } else if err != nil {
+        return nil, err
+    }
+    return &user, nil
 }
 
-func UpdateUser(email, password, id string) (User, error) {
-	var user User
+func UpdateUser(id string, name, email, password string) (User, error) {
+    var user User
 
-	err := database.SQL.QueryRow(
-		"UPDATE \"user\" SET email = $1, password = $2 WHERE id = $3 RETURNING id, email", email, password, id,
-	).Scan(
-		&user.ID, &user.Email,
-	)
+    err := database.SQL.QueryRow(
+        `UPDATE "user"
+           SET name = $1, email = $2, password = $3
+           WHERE id = $4
+         RETURNING id, name, email, active`,
+        name, email, password, id,
+    ).Scan(&user.ID, &user.Name, &user.Email, &user.Active)
 
-	return user, err
+    return user, err
 }
 
 func DeleteUser(id string) error {
-	// Verificar se o usuário existe
-	var exists bool
-	err := database.SQL.QueryRow("SELECT exists (SELECT 1 FROM \"user\" WHERE id=$1)", id).Scan(&exists)
-	if err != nil {
-		//return fmt.Errorf("erro ao verificar a existência do usuário: %v", err)
-		return err
-	}
-	if !exists {
-		//return fmt.Errorf("Usuário com ID %s não existe", id)
-		return fmt.Errorf(id)
-	}
+    var exists bool
+    err := database.SQL.QueryRow(
+        `SELECT EXISTS (SELECT 1 FROM "user" WHERE id = $1)`, id,
+    ).Scan(&exists)
+    if err != nil {
+        return fmt.Errorf("erro ao verificar existência do usuário: %v", err)
+    }
+    if !exists {
+        return fmt.Errorf("usuário com ID %d não existe", id)
+    }
 
-	// Deletar o usuário
-	_, err = database.SQL.Exec("DELETE FROM \"user\" WHERE id = $1", id)
-	if err != nil {
-			//return fmt.Errorf("erro ao deletar o usuário: %v", err)
-			return err
-	}
+    _, err = database.SQL.Exec(`DELETE FROM "user" WHERE id = $1`, id)
+    if err != nil {
+        return fmt.Errorf("erro ao deletar usuário: %v", err)
+    }
 
-	return nil
+    return nil
 }

@@ -21,7 +21,7 @@ var (
 
 func routes() {
 	http.HandleFunc("/user", userHandler)
-	http.HandleFunc("/user/", userHandler)
+	http.HandleFunc("/user/{id}", userHandler)
 	http.HandleFunc("/users", usersHandler)
 }
 

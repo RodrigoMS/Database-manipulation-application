@@ -1,4 +1,3 @@
-
 /*
 
    Em um sistema em produção, geralmente é preferível manter uma conexão persistente
@@ -95,8 +94,12 @@ func loadDBConnectionString(key string) (string, error) {
 		return "", fmt.Errorf("%s environment variable not set", key)
 	}
 
+	//fmt.Println(raw)
+
 	// Expande variáveis internas ($PGUSER etc.) se houver
 	dataSourceName := os.ExpandEnv(raw)
+
+	//fmt.Println(dsn)
 
 	return dataSourceName, nil
 }
@@ -148,10 +151,34 @@ func ConnectionMonitor() {
 			}
 
 			defer fmt.Println("\033[32mConnection established!\033[0m")
-
+			//ConnectedChan <- true // sinaliza sucesso
 		}()
 	}
 }
+
+/*func HandleRequest(w http.ResponseWriter, r *http.Request) {
+    timeout := 3 * time.Second
+    done := make(chan bool)
+
+    go func() {
+        for {
+            if dbInstance == nil || dbInstance.Ping() != nil {
+                err := OpenConnection()
+                if err != nil {
+                    time.Sleep(2 * time.Second)
+            }
+            done <- true
+            return
+        }
+    }()
+
+    select {
+    case <-done:
+        fmt.Fprintln(w, "Connection established.")
+    case <-time.After(timeout):
+        fmt.Fprintln(w, "Still trying to connect. Please wait or try again shortly.")
+    }
+}*/
 
 func CloseConnection() error {
 	if dbInstance == nil {

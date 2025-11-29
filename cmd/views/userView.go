@@ -14,6 +14,10 @@ func HandleMethodNotAllowed(w http.ResponseWriter) {
 	http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 }
 
+func HandleStatusConflict(w http.ResponseWriter, errorMessage string) {
+	http.Error(w, errorMessage, http.StatusConflict)
+}
+
 func HandleInternalServerError(w http.ResponseWriter, errorMessage string) {
 	http.Error(w, errorMessage, http.StatusInternalServerError)
 }

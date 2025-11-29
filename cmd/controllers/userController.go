@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -27,13 +26,14 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	user, err := models.ReadUser(parts[2])
 
 	if err != nil {
-		fmt.Println("Erro em userModel.go: \n", err)
+		//fmt.Println("Erro em userModel.go: \n", err)
 		// Configurar  e executar uma função que grava os logs de erro
 		// em um arquivo destro da pasta logs na raiz da aplicação
 		//log.Printf("Erro em userModel.go: %v", err)
 
 		//view.Error(w, r)
 		views.HandleNotFound(w, nil)
+		//views.HandleInternalServerError(w, "Recurso indisponível, tente novamente mais tarde.")
 		return
 	}
 
@@ -48,7 +48,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 func GetUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := models.ReadAllUsers()
 	if err != nil {
-		fmt.Println("Erro em userModel.go")
+		views.HandleInternalServerError(w, "Recurso indisponível, tente novamente mais tarde.")
 		return
 	}
 
@@ -61,15 +61,23 @@ func PostUser(w http.ResponseWriter, r *http.Request) {
 
 	user, err := utils.ReadJSON[models.User](r.Body)
 	if err != nil {
-			views.HandleNotFound(w, nil)
-			return
+		views.HandleNotFound(w, nil)
+		return
 	}
 
 	// Lógica de validação dos dados
 	// ...
 
 	user, err = models.CreateUser(user.Name, user.Email, user.Password)
+
 	if err != nil {
+
+		// Verifica pelo código de erro do Banco de Dados.
+		if err.Error() == "23505" {
+			views.HandleStatusConflict(w, "Não foi possível concluir o cadastro. Usuário já cadastrado.")
+			return
+		}
+			
 		views.HandleInternalServerError(w, "Não foi possível concluir o cadastro. Tente novamente mais tarde.")
 		return
 	}

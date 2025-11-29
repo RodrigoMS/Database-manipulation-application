@@ -35,8 +35,8 @@ INSERT INTO "user" (name, email, password) VALUES
 ('João Pedro da Silva Júnior', 'joao.pedro@app.com', 'JoaoSilva@123'),
 ('Maria Clara de Souza Lima', 'maria.clara@app.com', 'ClaraLima@456'),
 ('Carlos Henrique Monteiro', 'carlos.henrique@app.com', 'CarlosH@789'),
-('Fernanda Beatriz Ramos', 'fernanda.ramos@app.com', 'FernandaR@321');
-/*('Lucas Eduardo Martins', 'lucas.martins@app.com', 'LucasM@654'),
+('Fernanda Beatriz Ramos', 'fernanda.ramos@app.com', 'FernandaR@321'),
+('Lucas Eduardo Martins', 'lucas.martins@app.com', 'LucasM@654'),
 ('Patrícia Gomes Oliveira', 'patricia.oliveira@app.com', 'PatriciaO@987'),
 ('Rafael Augusto Nunes', 'rafael.nunes@app.com', 'RafaelN@159'),
 ('Juliana Tavares Costa', 'juliana.costa@app.com', 'JulianaC@753'),
@@ -79,7 +79,7 @@ INSERT INTO "user" (name, email, password) VALUES
 ('Renata Moura Fernandes', 'renata.fernandes@app.com', 'RenataF@456'),
 ('Vinícius Costa Andrade', 'vinicius.andrade@app.com', 'ViniciusA@654'),
 ('Carolina Batista Nunes', 'carolina.nunes@app.com', 'CarolinaN@852'),
-('Alexandre Rocha Silva', 'alexandre.silva@app.com', 'AlexandreS@147');*/
+('Alexandre Rocha Silva', 'alexandre.silva@app.com', 'AlexandreS@147');
 
 
 -- Ver todas as tabelas do bando de dados.

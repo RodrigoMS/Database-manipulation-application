@@ -3,7 +3,7 @@ package views
 import (
 	"net/http"
 
-	"github.com/RodrigoMS/app/pkg/utils"
+	"github.com/RodrigoMS/app/cmd/pkg/utils"
 )
 
 func HandleNotFound(w http.ResponseWriter, r *http.Request) {

@@ -90,7 +90,23 @@ Com base nos conhecimentos adquiridos e na vontade de aprofundar meus estudos em
    ```
    .\app.exe
    ```
-7. Endpoints de teste
+7. Utilizando o arquivo Makefile para automatizar a compilação e execução:
+
+`make` → roda a regra all, que chama build e depois run.
+
+`make build` → apenas compila.
+
+`make run` → executa o binário já compilado.
+
+`make clean` → remove o executável.
+
+- Para automatizar a compilação e a execução quando os arquivos forem salvos use:
+
+```
+while inotifywait -e modify -r .; do make run; done
+```
+
+8. Endpoints de teste
 
    - documentation / user.http
 

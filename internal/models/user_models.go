@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/RodrigoMS/app/internal/database"
+	"github.com/RodrigoMS/app/cmd/internal/database"
 )
 
 /*func GetUser() app.User {

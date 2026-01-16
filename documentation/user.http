@@ -4,7 +4,7 @@ GET http://localhost:8080/users
 
 ###
 
-GET http://localhost:8080/user/080ec70f-581d-4c7e-b8c8-43fab9c4c111
+GET http://localhost:8080/user/304a6ee8-dbc5-4cac-b9db-edf8c9f163ec
 
 ###
 

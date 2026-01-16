@@ -1,12 +1,12 @@
-package controllers
+package handler
 
 import (
 	"net/http"
 	"strings"
 
-	"github.com/RodrigoMS/app/cmd/models"
-	"github.com/RodrigoMS/app/cmd/views"
-	"github.com/RodrigoMS/app/pkg/utils"
+	"github.com/RodrigoMS/app/cmd/internal/models"
+	"github.com/RodrigoMS/app/cmd/internal/views"
+	"github.com/RodrigoMS/app/cmd/pkg/utils"
 )
 
 

@@ -1,18 +1,19 @@
-package main
+package server
 
 import (
 	"net/http"
 	"sync"
 
-	"github.com/RodrigoMS/app/cmd/controllers"
+	"github.com/RodrigoMS/app/cmd/internal/handlers"
+	"github.com/RodrigoMS/app/cmd/internal/web"
 )
 
 var (
 	userHandlers = map[string]func(http.ResponseWriter, *http.Request) {
-		"GET":    controllers.GetUser,
-		"POST":   controllers.PostUser,
-		"PUT":    controllers.PutUser,
-		"DELETE": controllers.DeleteUser,
+		"GET":    handler.GetUser,
+		"POST":   handler.PostUser,
+		"PUT":    handler.PutUser,
+		"DELETE": handler.DeleteUser,
 		//"PATCH":  func() { models.GetUser() },*/
 	}
 
@@ -23,6 +24,7 @@ func routes() {
 	http.HandleFunc("/user", userHandler)
 	http.HandleFunc("/user/{id}", userHandler)
 	http.HandleFunc("/users", usersHandler)
+	http.HandleFunc("/server", web.InformationDatabase)
 }
 
 func userHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,6 +44,6 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func usersHandler(w http.ResponseWriter, r *http.Request) {
-	controllers.GetUsers(w, r)
+	handler.GetUsers(w, r)
 }
 

@@ -5,6 +5,8 @@ import (
 	"embed"
 	"html/template"
 	"net/http"
+
+	"github.com/RodrigoMS/app/cmd/internal/database"
 )
 
 //go:embed templates/*.html
@@ -14,10 +16,18 @@ var templateFiles embed.FS
 var temp = template.Must(template.ParseFS(templateFiles, "templates/*.html"))
 
 func InformationDatabase(w http.ResponseWriter, r *http.Request) {
-	err := temp.ExecuteTemplate(w, "Index", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	  db := database.GetDB()
+    info, err := db.GetDBInfo()
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    // passa o mapa para o template
+    err = temp.ExecuteTemplate(w, "Index", info)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
 }
 
 /*

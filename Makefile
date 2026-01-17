@@ -18,7 +18,7 @@ run: build
 #run:
 #   ./$(APP_NAME).exe
 
-# Parar a aplicação anterior
+# Parar a aplicação anteri
 stop:
 	@if [ -f $(PID_FILE) ]; then \
 		kill `cat $(PID_FILE)` && rm -f $(PID_FILE); \

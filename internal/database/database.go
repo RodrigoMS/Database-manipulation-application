@@ -193,32 +193,36 @@ func CloseConnection() error {
 	return nil
 }
 
-// GetDBInfo retorna informações do banco (mantido como exemplo)
-func (db *DB) GetDBInfo() error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+// DBInfo retorna informações básicas do banco
+func (db *DB) GetDBInfo() (map[string]any, error) {    // Reutiliza o contexto do caller, adicionando timeout
+    ctx, cancel := context.WithTimeout(context.Background(),  3*time.Second)
+    defer cancel()
 
-	var (
-		serverVersion     string
-		maxConnections    int
-		openedConnections int
-	)
+    var serverVersion string
+    var maxConnections, openedConnections int
 
-	err := db.QueryRowContext(
-		ctx,
-		`SELECT 
-			current_setting('server_version') AS server_version, 
-			current_setting('max_connections')::int AS max_connections, 
-			(SELECT COUNT(*)::int FROM pg_stat_activity WHERE datname = $1)::int AS opened_connections;`,
-		os.Getenv("PGDATABASE"),
-	).Scan(&serverVersion, &maxConnections, &openedConnections)
+    // Query única, sem subselect redundante
+    const query = `
+        SELECT 
+            current_setting('server_version'),
+            current_setting('max_connections')::int,
+            COUNT(*)::int
+        FROM pg_stat_activity
+        WHERE datname = $1;
+    `
 
-	if err != nil {
-		return fmt.Errorf("failed to get database info: %v", err)
-	}
+    err := db.QueryRowContext(ctx, query, os.Getenv("PGDATABASE")).
+        Scan(&serverVersion, &maxConnections, &openedConnections)
+    if err != nil {
+        return nil, fmt.Errorf("getDBInfo failed: %w", err)
+    }
 
-	fmt.Printf("Versão: %s \nMáx conexões: %d \nConexões abertas: %d\n",
-		serverVersion, maxConnections, openedConnections)
-
-	return nil
+    // Retorno direto como mapa
+    return map[string]any{
+        "ServerVersion":     serverVersion,
+        "MaxConnections":    maxConnections,
+        "OpenedConnections": openedConnections,
+    }, nil
 }
+
+

@@ -1,10 +1,10 @@
 {{ define "Index"}}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Template</title>
+    <title>Banco de dados</title>
     <style>
       body {
         background-color: #1c1c1c;
@@ -13,7 +13,10 @@
     </style>
   </head>
   <body>
-    <h1>Template HTML render in golang server</h1>
+    <h1>Informações do Banco de Dados</h1>
+    <p>Versão: {{.ServerVersion}}</p>
+    <p>Máx conexões: {{.MaxConnections}}</p>
+    <p>Conexões abertas: {{.OpenedConnections}}</p>
   </body>
 </html>
 {{end}}

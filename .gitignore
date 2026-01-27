@@ -1,5 +1,2 @@
-app
-go.sum
-
 .env
-.app_pid
+go.sum

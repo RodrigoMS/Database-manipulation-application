@@ -8,7 +8,7 @@ all: build run
 
 # Compilar o código Go
 build:
-	@go build -o $(APP_NAME) cmd/$(MAIN)
+	@go build -o $(APP_NAME) $(MAIN)
 
 # Executar o binário em background e salvar o PID
 run: build

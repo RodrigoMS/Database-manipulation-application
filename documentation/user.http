@@ -1,39 +1,21 @@
-### Use a extensão do VSCode - REST Client (Huachao Mao)
-
 GET http://localhost:8080/users
 
 ###
 
-GET http://localhost:8080/user/a9b469-4572-4f39-a7e0-4a964c9164d3
+POST http://localhost:8080/users
 
 ###
 
-POST http://localhost:8080/user HTTP/1.1
-content-type: application/json
-
-{
-    "name": "User RMS",
-    "email": "rms@localhost.com",
-    "password": "1234"
-}
+PATCH http://localhost:8080/users
 
 ###
 
-PUT http://localhost:8080/user HTTP/1.1
-content-type: application/json
-
-{
-    "id": "080ec70f-581d-4c7e-b8c8-43fab9c4c111",
-    "name": "User RMS",
-    "email": "rms@app.com",
-    "password": "123456789"
-}
+DELETE http://localhost:8080/users
 
 ###
 
-DELETE http://localhost:8080/user HTTP/1.1
-content-type: application/json
+PUT http://localhost:8080/users
 
-{
-    "id": "080ec70f-581d-4c7e-b8c8-43fab9c4c111"
-}
+###
+
+GET http://localhost:8080/products

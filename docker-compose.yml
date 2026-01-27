@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   postgres:
     image: postgres:latest
@@ -10,13 +12,13 @@ services:
     volumes:
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
-  #psql:
-  #  image: postgres:latest
-  #  depends_on:
-  #    - postgres
-  #  volumes:
-  #    - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-  #  command: psql -U docker -d app -f /docker-entrypoint-initdb.d/script.sql
+  psql:
+    image: postgres:latest
+    depends_on:
+      - postgres
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    command: psql -U docker -d app -f /docker-entrypoint-initdb.d/script.sql
 # Iniciar o banco de dados
 # docker-compose up
 

@@ -1,10 +1,10 @@
-package handler
+package handlers
 
 import (
 	"net/http"
 	"strings"
 
-	"github.com/RodrigoMS/app/cmd/internal/models"
+	"github.com/RodrigoMS/app/cmd/internal/domain"
 	"github.com/RodrigoMS/app/cmd/internal/views"
 	"github.com/RodrigoMS/app/cmd/pkg/utils"
 )
@@ -12,7 +12,7 @@ import (
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	// Lógica do controlador aqui
-	//user := models.GetUser()
+	//user := domain.GetUser()
 
 	//fmt.Println(user)
 	// Renderizar a view com os dados do usuário
@@ -23,7 +23,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := models.ReadUser(parts[2])
+	user, err := domain.ReadUser(parts[2])
 
 	if err != nil {
 		//fmt.Println("Erro em userModel.go: \n", err)
@@ -46,7 +46,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
-	users, err := models.ReadAllUsers()
+	users, err := domain.ReadAllUsers()
 	if err != nil {
 		views.HandleInternalServerError(w, "Recurso indisponível, tente novamente mais tarde.")
 		return
@@ -57,9 +57,9 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 
 
 func PostUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+	var user domain.User
 
-	user, err := utils.ReadJSON[models.User](r.Body)
+	user, err := utils.ReadJSON[domain.User](r.Body)
 	if err != nil {
 		views.HandleNotFound(w, nil)
 		return
@@ -68,7 +68,7 @@ func PostUser(w http.ResponseWriter, r *http.Request) {
 	// Lógica de validação dos dados
 	// ...
 
-	user, err = models.CreateUser(user.Name, user.Email, user.Password)
+	user, err = domain.CreateUser(user.Name, user.Email, user.Password)
 
 	if err != nil {
 
@@ -86,9 +86,9 @@ func PostUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func PutUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+	var user domain.User
 
-	user, err := utils.ReadJSON[models.User](r.Body)
+	user, err := utils.ReadJSON[domain.User](r.Body)
 	if err != nil {
 			views.HandleNotFound(w, nil)
 			return
@@ -97,7 +97,7 @@ func PutUser(w http.ResponseWriter, r *http.Request) {
 	// Lógica de validação dos dados
 	// ...
 
-	user, err = models.UpdateUser(user.ID, user.Name, user.Email, user.Password)
+	user, err = domain.UpdateUser(user.ID, user.Name, user.Email, user.Password)
 	if err != nil {
 		views.HandleInternalServerError(w, "Não foi possível atualizar o cadastro. Tente novamente mais tarde.")
 		return
@@ -107,9 +107,9 @@ func PutUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+	var user domain.User
 
-	user, err := utils.ReadJSON[models.User](r.Body)
+	user, err := utils.ReadJSON[domain.User](r.Body)
 	if err != nil {
 			views.HandleNotFound(w, nil)
 			return
@@ -118,7 +118,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	// Lógica de validação dos dados
 	// ...
 
-	err = models.DeleteUser(user.ID)
+	err = domain.DeleteUser(user.ID)
 
 	if err != nil {
 		views.HandleInternalServerError(w, "Erro ao excluir o usuário. Verifique se ele existe ou tente novamente em instantes.")

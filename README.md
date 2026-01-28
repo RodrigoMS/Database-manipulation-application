@@ -48,9 +48,7 @@ Com base nos conhecimentos adquiridos e na vontade de aprofundar meus estudos em
    ```
 
 2. Criar o arquivo .env na raiz do projeto.
-
    - Banco de dados em nuvem com NEON PostgreSQL:
-
      - Veja o video disponível no YouTube:
        - [Conectando uma aplicação Go ao Neon](https://youtu.be/AyKDQxnrrX4)
 
@@ -86,6 +84,7 @@ Com base nos conhecimentos adquiridos e na vontade de aprofundar meus estudos em
    ```
    ./app
    ```
+
    - Windows
    ```
    .\app.exe
@@ -107,7 +106,10 @@ while inotifywait -e modify -r .; do make run; done
 ```
 
 8. Endpoints de teste
-
    - documentation / user.http
 
    OBS: (Opcional) No VSCode use a extensão - REST Client (Huachao Mao)
+
+9. Organização de pastas em comparação com a arquitetura MVC
+   - domain - model
+   - handlers - controllers

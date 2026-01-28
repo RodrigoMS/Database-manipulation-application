@@ -5,31 +5,28 @@ import (
 	"embed"
 	"html/template"
 	"net/http"
-
-	"github.com/RodrigoMS/app/cmd/internal/database"
 )
 
 //go:embed templates/*.html
 var templateFiles embed.FS
 
-// Carregamos o template a partir do sistema de arquivos embutido
 var temp = template.Must(template.ParseFS(templateFiles, "templates/*.html"))
 
-func InformationDatabase(w http.ResponseWriter, r *http.Request) {
-	  db := database.GetDB()
-    info, err := db.GetDBInfo()
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
+func RenderTemplate(w http.ResponseWriter, page string, data any) {
 
-    // passa o mapa para o template
-    err = temp.ExecuteTemplate(w, "Index", info)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-    }
+	err := temp.ExecuteTemplate(w, page, data)
+	if err != nil {
+		
+		tmplErr := temp.ExecuteTemplate(w, "Error500", nil)
+		if tmplErr != nil {
+			http.Error(w, "Erro interno no servidor", http.StatusInternalServerError)
+			/*
+				Pode-se usar a função de view
+				HandleInternalServerError(w http.ResponseWriter, errorMessage string)
+			*/
+		}
+	}
 }
-
 /*
 // Para caminho relativo do .html
 package web

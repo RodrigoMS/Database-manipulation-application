@@ -10,9 +10,9 @@ func Start() {
 	database.ConnectionMonitor()
   	defer database.CloseConnection()
 
-	routes()
+	router := routes()
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", router)
 }
 
 /*import (

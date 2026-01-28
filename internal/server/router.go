@@ -2,48 +2,22 @@ package server
 
 import (
 	"net/http"
-	"sync"
 
 	"github.com/RodrigoMS/app/cmd/internal/handlers"
-	"github.com/RodrigoMS/app/cmd/internal/web"
+	"github.com/RodrigoMS/app/cmd/internal/views"
 )
 
-var (
-	userHandlers = map[string]func(http.ResponseWriter, *http.Request) {
-		"GET":    handler.GetUser,
-		"POST":   handler.PostUser,
-		"PUT":    handler.PutUser,
-		"DELETE": handler.DeleteUser,
-		//"PATCH":  func() { models.GetUser() },*/
-	}
+func routes() *http.ServeMux {
+	router := http.NewServeMux()
 
-	mutex sync.RWMutex
-)
+	router.HandleFunc("GET /users", handlers.GetUsers)
+	router.HandleFunc("POST /users", handlers.PostUser)
+	router.HandleFunc("PATCH /users", handlers.PutUser)
+	router.HandleFunc("DELETE /users", handlers.DeleteUser)
 
-func routes() {
-	http.HandleFunc("/user", userHandler)
-	http.HandleFunc("/user/{id}", userHandler)
-	http.HandleFunc("/users", usersHandler)
-	http.HandleFunc("/server", web.InformationDatabase)
+	router.HandleFunc("GET /database-info", handlers.GetDatabaseInfo)
+
+	router.HandleFunc("/", views.HandleNotFound)
+
+	return router
 }
-
-func userHandler(w http.ResponseWriter, r *http.Request) {
-
-	mutex.RLock()
-	defer mutex.RUnlock()
-
-	handler, ok := userHandlers[r.Method];
-
-	if ok {
-		handler(w, r)
-
-	} else {
-		// Status 405 - Método não suportado.
-		http.Error(w, "Método não suportado", http.StatusMethodNotAllowed)
-	}
-}
-
-func usersHandler(w http.ResponseWriter, r *http.Request) {
-	handler.GetUsers(w, r)
-}
-

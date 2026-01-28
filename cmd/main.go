@@ -1,9 +1,10 @@
 package main
 
-import "github.com/RodrigoMS/app/cmd/internal/server"
+import (
+	"github.com/RodrigoMS/app/cmd/internal/server"
+)
 
 func main() {
-
 	server.Start()
 
 	//database.ConnectionMonitor()
@@ -15,7 +16,7 @@ func main() {
 	    database.GetDB().GetDBInfo()
 	}()*/
 
-	//routes()
+	/*router()
 
-	//http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", nil)*/
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/RodrigoMS/app/cmd/internal/handlers"
 	"github.com/RodrigoMS/app/cmd/internal/views"
+	//"github.com/RodrigoMS/app/cmd/internal/web"
 )
 
 func routes() *http.ServeMux {
@@ -15,9 +16,15 @@ func routes() *http.ServeMux {
 	router.HandleFunc("PATCH /users", handlers.PutUser)
 	router.HandleFunc("DELETE /users", handlers.DeleteUser)
 
+	router.HandleFunc("GET /student-login", handlers.StudentLogin)
+	router.HandleFunc("GET /student-dashboard", handlers.StudentDashboard)
+
 	router.HandleFunc("GET /database-info", handlers.GetDatabaseInfo)
 
 	router.HandleFunc("/", views.HandleNotFound)
 
+	//web.SetupEmbeddedStatic(router)
+
 	return router
 }
+

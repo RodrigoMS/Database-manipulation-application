@@ -1,0 +1,162 @@
+   @charset "UTF-8";
+   
+   /* Reset e estilos globais */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1c1c1c;
+    color: #fff;
+    width: 100vw;
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  }
+
+  /* Bloco: login-form */
+  .login-form {
+    width: 90%;
+    max-width: 400px;
+    padding: 30px;
+    border: 1px solid #2f2f2f;
+    border-radius: 15px;
+    background-color: #252525;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Elemento: título do login-form */
+  .login-form__title {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #4CAF50;
+    font-size: 28px;
+  }
+
+  /* Bloco: form-field */
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+  }
+
+  /* Elemento: label do form-field */
+  .form-field__label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #e0e0e0;
+  }
+
+  /* Elemento: input do form-field */
+  .form-field__input {
+    height: 45px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  /* Modificador: form-field__input com foco */
+  .form-field__input--focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  }
+
+  /* Placeholder do form-field__input */
+  .form-field__input::placeholder {
+    color: #888;
+  }
+
+  /* Bloco: form-actions */
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 0 5px;
+  }
+
+  /* Bloco: submit-button */
+  .submit-button {
+    margin: 10px 0px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  /* Modificador: submit-button hover */
+  .submit-button--hover:hover:not(:disabled) {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  }
+
+  /* Modificador: submit-button active */
+  .submit-button--active:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  /* Modificador: submit-button disabled */
+  .submit-button--disabled:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* Bloco: form-message */
+  .form-message {
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  /* Modificador: form-message error */
+  .form-message--error {
+    background-color: #f44336;
+  }
+
+  /* Modificador: form-message success */
+  .form-message--success {
+    background-color: #4CAF50;
+  }
+
+  /* Animação para mensagens */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .login-form {
+      width: 95%;
+      padding: 20px;
+    }
+    
+    .form-field__input,
+    .submit-button {
+      height: 50px;
+      font-size: 16px;
+    }
+  }

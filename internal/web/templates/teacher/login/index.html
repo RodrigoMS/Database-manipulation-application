@@ -1,0 +1,53 @@
+{{define "TeacherLogin"}}
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Turma</title>
+
+    {{.Style}}
+  </head>
+  <body>
+    <main class="login-form">
+      <h1 class="login-form__title">Turma</h1>
+
+      <div class="form-field">
+        <label for="student_1" class="form-field__label">Aluno 1</label>
+        <input
+          type="text"
+          name="student_1"
+          id="student_1"
+          class="form-field__input"
+          placeholder="Digite o seu nome"
+          autocomplete="name"
+        />
+      </div>
+
+      <div class="form-field">
+        <label for="student_2" class="form-field__label">Aluno 2</label>
+        <input
+          type="text"
+          name="student_2"
+          id="student_2"
+          class="form-field__input"
+          placeholder="Digite o seu nome"
+          autocomplete="name"
+        />
+      </div>
+
+      <div class="form-actions">
+        <button
+          id="submitButton"
+          type="button"
+          class="submit-button submit-button--hover submit-button--active"
+        >
+          Entrar
+        </button>
+      </div>
+    </main>
+
+    {{.Script}}
+  </body>
+</html>
+{{end}}

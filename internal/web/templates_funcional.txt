@@ -1,0 +1,65 @@
+package web
+
+import (
+	"embed"
+	"html/template"
+	"net/http"
+	"path/filepath"
+	"strings"
+)
+
+//go:embed templates/*
+var templateFiles embed.FS
+
+var templates *template.Template
+
+// Executado automaticamente no runtime do Go ao iniciar o programa.
+func init() {
+    templates = template.New("") // cria um conjunto vazio
+    readTemplates("templates")
+}
+
+func readTemplates(folder string) {
+    entries, err := templateFiles.ReadDir(folder)
+    if err != nil {
+        panic(err)
+    }
+    for _, e := range entries {
+        fullPath := folder + "/" + e.Name()
+        if e.IsDir() {
+            readTemplates(fullPath) // entra recursivamente
+        } else if strings.HasSuffix(e.Name(), ".html") {
+            // Carrega o arquivo .html como template
+            content, err := templateFiles.ReadFile(fullPath)
+            if err != nil {
+                panic(err)
+            }
+            // Adiciona ao conjunto de templates
+            _, err = templates.New(filepath.Base(fullPath)).Parse(string(content))
+            if err != nil {
+                panic(err)
+            }
+        }
+    }
+
+}
+
+// Estrutura de dados que será passada para os templates
+type PageData struct {
+    Style  template.CSS
+    Script template.JS
+    Data   any
+}
+
+func RenderTemplate(w http.ResponseWriter, page string, data any) {
+    pd := PageData{
+        Style:  "body { background-color: lightblue; }",
+        Script: "console.log('Página carregada!')",
+        Data:   data,
+    }
+
+    err := templates.ExecuteTemplate(w, page, pd)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
+}

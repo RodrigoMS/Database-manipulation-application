@@ -5,10 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Turma</title>
-
-    <style>
-      {{.Style}}
-    </style>
   </head>
   <body>
     <main class="login-form">
@@ -50,7 +46,13 @@
     </main>
 
     <script>
-      {{.Script}}
+      // Decodifica e injeta o CSS
+      const css = atob("{{.CSS}}");
+      const style = document.createElement("style");
+      style.innerHTML = css;
+      document.head.appendChild(style);
+
+      eval(atob("{{.JS}}"));
     </script>
   </body>
 </html>

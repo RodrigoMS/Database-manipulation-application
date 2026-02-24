@@ -4,11 +4,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - Turma</title>
+    <title>Login - Turma {{.Data}}</title>
+    <style>
+      {{.CSS}}
+    </style>
   </head>
   <body>
     <main class="login-form">
-      <h1 class="login-form__title">Turma</h1>
+      <h1 class="login-form__title">Turma - {{.Data}}</h1>
 
       <div class="form-field">
         <label for="student_1" class="form-field__label">Aluno 1</label>
@@ -46,13 +49,15 @@
     </main>
 
     <script>
+      const className = "{{.Data}}";
+      {{.JS}}
       // Decodifica e injeta o CSS
-      const css = atob("{{.CSS}}");
+      /*const css = atob("{{.CSS}}");
       const style = document.createElement("style");
       style.innerHTML = css;
       document.head.appendChild(style);
 
-      eval(atob("{{.JS}}"));
+      eval(atob("{{.JS}}"));*/
     </script>
   </body>
 </html>

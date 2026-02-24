@@ -3,17 +3,22 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Painel de controle</title>
+    <title>Painel de controle - {{.Data.ClassName}}</title>
     <style>
       body {
         background-color: #1c1c1c;
         color: #fff;
+        font-family: Arial, sans-serif;
       }
     </style>
   </head>
   <body>
-    <h1>Aluno seja bem vindo!</h1>
+    {{if .Data.Student2}}
+    <h1>Bem-vindos, {{.Data.Student1}} e {{.Data.Student2}}!</h1>
+    {{else}}
+    <h1>Bem-vindo, {{.Data.Student1}}!</h1>
+    {{end}}
+    <p>Turma: {{.Data.ClassName}}</p>
   </body>
 </html>
 {{end}}

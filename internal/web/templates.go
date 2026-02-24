@@ -1,14 +1,16 @@
 package web
 
 import (
+	"bytes"
 	"embed"
-	"encoding/base64"
+	//"encoding/base64"
 	"fmt"
 	"html/template"
 	"io/fs"
 	"net/http"
 	"path/filepath"
-	"regexp"
+
+	//"regexp"
 	"strings"
 )
 
@@ -68,28 +70,30 @@ func getPathFile(files *[]string) {
 // Coloca tudo em uma única linha e remove comentários.
 func minifyText(text string) string {
     // Remove comentários de linha // ...
-    reLine := regexp.MustCompile(`//.*`)
-    text = reLine.ReplaceAllString(text, "")
+    //reLine := regexp.MustCompile(`//.*`)
+    //text = reLine.ReplaceAllString(text, "")
 
     // Remove comentários de bloco /* ... */
-    reBlock := regexp.MustCompile(`/\*.*?\*/`)
-    text = reBlock.ReplaceAllString(text, "")
+    //reBlock := regexp.MustCompile(`/\*.*?\*/`)
+    //text = reBlock.ReplaceAllString(text, "")
 
     // Remove quebras de linha e tabs.
-    text = strings.ReplaceAll(text, "\n", "")
-    text = strings.ReplaceAll(text, "\r", "")
-    text = strings.ReplaceAll(text, "\t", "")
+    //text = strings.ReplaceAll(text, "\n", "")
+    //text = strings.ReplaceAll(text, "\r", "")
+    //text = strings.ReplaceAll(text, "\t", "")
 
     // Remove espaços duplicados.
-    text = strings.Join(strings.Fields(text), " ")
+    //text = strings.Join(strings.Fields(text), " ")
 
     // Codifica em Base64 
-    encoded := base64.StdEncoding.EncodeToString([]byte(text))
+    /*encoded := base64.StdEncoding.EncodeToString([]byte(text))
 
-    return encoded
+    return encoded*/
+
+    return text
 }
 
-// Lê e retorna o conteúdo dos arquivos do mesmo diretório do template
+// Lê e retorna o conteúdo dos arquivos do mesmo diretório do template.
 func readAssetFile(templateName string, fileExtension string) (string, error) {
     path, ok := filePath[templateName]
     if !ok {
@@ -121,17 +125,20 @@ func readAssetFile(templateName string, fileExtension string) (string, error) {
 func RenderTemplate(w http.ResponseWriter, templateName string, data any) {
     css, err := readAssetFile(templateName, ".css")
     if err != nil {
-        http.Error(w, fmt.Sprintf("Erro ao carregar CSS: %v", err), http.StatusInternalServerError)
+        fmt.Println("Erro ao carregar CSS:", err)
+        http.Error(w, "Ocorreu um problema interno no servidor. Tente novamente mais tarde.", http.StatusInternalServerError)
+
         return
     }
 
     js, err := readAssetFile(templateName, ".js")
     if err != nil {
-        http.Error(w, fmt.Sprintf("Erro ao carregar JS: %v", err), http.StatusInternalServerError)
+        fmt.Println("Erro ao carregar JS:", err)
+        http.Error(w, "Ocorreu um problema interno no servidor. Tente novamente mais tarde.", http.StatusInternalServerError)
+
         return
     }
 
-    // Junta tudo em um struct para passar ao template.
     content := struct {
         CSS  template.CSS
         JS   template.JS
@@ -142,13 +149,15 @@ func RenderTemplate(w http.ResponseWriter, templateName string, data any) {
         Data: data,
     }
 
-    // Exibir no terminal
-    /*if err := templates.ExecuteTemplate(os.Stdout, templateName, content); err != nil {
-        panic(err) // aqui você decide se quer encerrar ou apenas logar
-    }*/
-
-    // Exibir no navegador
-    if err := templates.ExecuteTemplate(w, templateName, content); err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
+    var buf bytes.Buffer
+    if err := templates.ExecuteTemplate(&buf, templateName, content); err != nil {
+        buf.Reset()
+        // sobrescreve err com o resultado da segunda tentativa
+        if err = templates.ExecuteTemplate(&buf, "Error500", nil); err != nil {
+            http.Error(w, "ERRO 500\n\nOcorreu um problema interno no servidor. \nTente novamente mais tarde.", http.StatusInternalServerError)
+            return
+        }
+        w.WriteHeader(http.StatusInternalServerError)
     }
+    buf.WriteTo(w)
 }

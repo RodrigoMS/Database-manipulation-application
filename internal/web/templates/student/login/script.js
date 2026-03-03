@@ -163,12 +163,13 @@ async function handleFormSubmit() {
     const student1Input = document.querySelector("#student_1");
     const student2Input = document.querySelector("#student_2");
 
-    applyValidationStyles(
-      student1Input,
-      formData.student_1 &&
-        formData.student_1.length <= 100 &&
-        /^[a-zA-ZÀ-ÿ\s\-']+$/.test(formData.student_1),
-    );
+    if (formData.student_1)
+      applyValidationStyles(
+        student1Input,
+        formData.student_1 &&
+          formData.student_1.length <= 100 &&
+          /^[a-zA-ZÀ-ÿ\s\-']+$/.test(formData.student_1),
+      );
 
     if (formData.student_2) {
       applyValidationStyles(

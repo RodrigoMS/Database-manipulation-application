@@ -37,25 +37,26 @@ func StudentLogin(w http.ResponseWriter, r *http.Request) {
 // Autentica o aluno e gera um token de sessão.
 // Estrutura que representa os dados recebidos no corpo da requisição
 func StudentAuthentication(w http.ResponseWriter, r *http.Request) {
-    var req LoginRequest
-    if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+    var request LoginRequest
+    if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
         http.Error(w, `{"error":"invalid_json"}`, http.StatusBadRequest)
         return
     }
 
-    class := req.ClassName
+    class := request.ClassName
 
     // Aqui você faria a validação real
-    if domain.ValidateStudent(req.Student1, class) {
+    if domain.ValidateStudent(request.Student1, class) && 
+       (request.Student2 == "" || domain.ValidateStudent(request.Student2, class)) {
         student := domain.Student{
-            Name:  req.Student1,
+            Name:  request.Student1,
             Class: class,
         }
 
         // Monta os dados da sessão
         sessionData := map[string]string{
-            "student1": req.Student1,
-            "student2": req.Student2,
+            "student1": request.Student1,
+            "student2": request.Student2,
             "class":    class,
         }
 
@@ -80,7 +81,7 @@ func StudentAuthentication(w http.ResponseWriter, r *http.Request) {
         json.NewEncoder(w).Encode(map[string]interface{}{
             "message":  "Login realizado com sucesso",
             "student":  student,
-            "partner":  req.Student2,
+            "partner":  request.Student2,
             "redirect": "/student-dashboard",
         })
     } else {
@@ -112,7 +113,7 @@ func StudentDashboard(w http.ResponseWriter, r *http.Request) {
 
     student1 := sessionData["student1"]
     student2 := sessionData["student2"]
-    class := sessionData["class"]
+    class := sessionData["class"] 
 
     /*if student2 != "" {
         fmt.Printf("Alunos autenticados: %s e %s da turma %s\n", student1, student2, class)
@@ -127,7 +128,35 @@ func StudentDashboard(w http.ResponseWriter, r *http.Request) {
     }
 
     web.RenderTemplate(w, "StudentDashboard", data)
+}
 
+
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+    // 1. Pega o cookie atual
+    //cookie, err := r.Cookie("student_session")
+    //if err == nil {
+        // 2. Invalida a sessão no servidor (banco de dados, redis, etc)
+        //invalidateSession(cookie.Value)
+    //}
+
+    pathParts := strings.Split(r.URL.Path, "/")
+    className := ""
+    if len(pathParts) > 2 {
+        className = pathParts[2]
+    }
+    
+    // 3. Remove o cookie
+    http.SetCookie(w, &http.Cookie{
+        Name:     "student_session",
+        Value:    "",
+        Path:     "/",
+        MaxAge:   -1,
+        HttpOnly: true,
+        Secure:   true,
+        SameSite: http.SameSiteStrictMode,
+    })
+    
+    http.Redirect(w, r, "/student-login/"+className, http.StatusSeeOther)
 }
 
 

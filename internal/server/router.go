@@ -17,8 +17,10 @@ func routes() *http.ServeMux {
 	router.HandleFunc("DELETE /users", handlers.DeleteUser)
 
 	router.HandleFunc("GET /student-login/{class}", handlers.StudentLogin)
-	router.HandleFunc("GET /student-dashboard", handlers.StudentDashboard)
 	router.HandleFunc("POST /student-authentication", handlers.StudentAuthentication)
+	router.HandleFunc("POST /student-logout/{class}", handlers.LogoutHandler)
+
+	router.HandleFunc("GET /student-dashboard", handlers.StudentDashboard)
 
 	router.HandleFunc("GET /database-info", handlers.GetDatabaseInfo)
 

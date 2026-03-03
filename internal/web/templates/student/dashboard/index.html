@@ -19,6 +19,28 @@
     <h1>Bem-vindo, {{.Data.Student1}}!</h1>
     {{end}}
     <p>Turma: {{.Data.ClassName}}</p>
+
+    <footer><button id="closeSession">Sair</button></footer>
+
+    <script>
+      const className = {{.Data.ClassName}};
+      document.getElementById("closeSession").addEventListener("click", async () => {
+          try {
+              const response = await fetch(`/student-logout/${className}`, {
+                  method: "POST",
+                  credentials: "include",
+              });
+
+              if (response.ok) {
+                  window.location.href = `/student-login/${className}`;
+              } else {
+                  console.error("Erro no logout");
+              }
+          } catch (error) {
+              console.error("Erro:", error);
+          }
+      });
+    </script>
   </body>
 </html>
 {{end}}

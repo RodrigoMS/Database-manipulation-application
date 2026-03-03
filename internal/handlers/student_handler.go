@@ -25,13 +25,14 @@ type LoginRequest struct {
 // Carrega o template html do login dos alunos.
 func StudentLogin(w http.ResponseWriter, r *http.Request) {
     pathParts := strings.Split(r.URL.Path, "/")
-    class := ""
-    if len(pathParts) > 2 {
-        class = pathParts[2] // "5A"
-    }
+    class := pathParts[2]
+    switch class {
+        case "1", "2", "3", "4", "5":
+            web.RenderTemplate(w, "StudentLogin", class)
 
-    // Passa a string diretamente
-    web.RenderTemplate(w, "StudentLogin", class)
+        default:
+            http.Redirect(w, r, "/", http.StatusSeeOther)
+    }
 }
 
 // Autentica o aluno e gera um token de sessão.
@@ -69,7 +70,7 @@ func StudentAuthentication(w http.ResponseWriter, r *http.Request) {
             Name:     "student_session",
             Value:    sessionValue,
             Path:     "/",
-            Expires:  time.Now().Add(1 * time.Hour),
+            //Expires:  time.Now().Add(1 * time.Hour), // Expira em 1 hora
             HttpOnly: true,
             Secure:   true,
             SameSite: http.SameSiteStrictMode,
@@ -93,21 +94,21 @@ func StudentAuthentication(w http.ResponseWriter, r *http.Request) {
 func StudentDashboard(w http.ResponseWriter, r *http.Request) {
     cookie, err := r.Cookie("student_session")
     if err != nil || cookie.Value == "" {
-        http.Redirect(w, r, "/student-login", http.StatusSeeOther)
+        http.Redirect(w, r, "/", http.StatusSeeOther)
         return
     }
 
     // Decodifica Base64
     decoded, err := base64.StdEncoding.DecodeString(cookie.Value)
     if err != nil {
-        http.Redirect(w, r, "/student-login", http.StatusSeeOther)
+        http.Redirect(w, r, "/", http.StatusSeeOther)
         return
     }
 
     // Decodifica JSON
     var sessionData map[string]string
     if err := json.Unmarshal(decoded, &sessionData); err != nil {
-        http.Redirect(w, r, "/student-login", http.StatusSeeOther)
+        http.Redirect(w, r, "/", http.StatusSeeOther)
         return
     }
 

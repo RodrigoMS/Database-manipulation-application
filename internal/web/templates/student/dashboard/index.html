@@ -1,46 +1,250 @@
 {{ define "StudentDashboard"}}
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <title>Painel de controle - {{.Data.ClassName}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aula - {{.Data.ClassName}}º ano</title>
     <style>
-      body {
-        background-color: #1c1c1c;
-        color: #fff;
-        font-family: Arial, sans-serif;
-      }
+      {{.CSS}}
     </style>
   </head>
   <body>
-    {{if .Data.Student2}}
-    <h1>Bem-vindos, {{.Data.Student1}} e {{.Data.Student2}}!</h1>
-    {{else}}
-    <h1>Bem-vindo, {{.Data.Student1}}!</h1>
-    {{end}}
-    <p>Turma: {{.Data.ClassName}}</p>
+    <div class="dashboard-container">
+      <!-- Overlay para fechar o menu -->
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <footer><button id="closeSession">Sair</button></footer>
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <!-- Botão fechar do sidebar (mobile) -->
+        <button
+          class="sidebar__close"
+          id="sidebarClose"
+          aria-label="Fechar menu"
+        >
+          ✕
+        </button>
 
-    <script>
-      const className = {{.Data.ClassName}};
-      document.getElementById("closeSession").addEventListener("click", async () => {
-          try {
-              const response = await fetch(`/student-logout/${className}`, {
-                  method: "POST",
-                  credentials: "include",
-              });
+        <div class="sidebar__logo">📚 Atividades</div>
 
-              if (response.ok) {
-                  window.location.href = `/student-login/${className}`;
-              } else {
-                  console.error("Erro no logout");
-              }
-          } catch (error) {
-              console.error("Erro:", error);
-          }
-      });
-    </script>
+        <!-- Container com scroll apenas para o menu -->
+        <div class="nav-menu-container">
+          <ul class="nav-menu">
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link nav-menu__link--active">
+                <span class="nav-menu__icon">📖</span>
+                <span>Introdução da aula</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">❓</span>
+                <span>Quiz interativo</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🔍</span>
+                <span>Caça-palavras</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🔄</span>
+                <span>Palavras cruzadas</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🎴</span>
+                <span>Jogo da memória</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🖱️</span>
+                <span>Arrasta e solta</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🧩</span>
+                <span>Quebra-cabeça</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🎲</span>
+                <span>Jogo de tabuleiro</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🃏</span>
+                <span>Jogo da velha</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">⚡</span>
+                <span>Complete a frase</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🎯</span>
+                <span>Associação de ideias</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🔢</span>
+                <span>Sequência lógica</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🎨</span>
+                <span>Colorir interativo</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">⏰</span>
+                <span>Desafio contra o tempo</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🗂️</span>
+                <span>Classificação de objetos</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🎭</span>
+                <span>Role-play (diálogos)</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">📊</span>
+                <span>Enquete em tempo real</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🧮</span>
+                <span>Desafio de matemática</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🌍</span>
+                <span>Mapa interativo</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🎼</span>
+                <span>Jogo musical</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🔠</span>
+                <span>Formação de palavras</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">⚖️</span>
+                <span>Verdadeiro ou falso</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🔄</span>
+                <span>Roda da sorte</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">📏</span>
+                <span>Medidas e proporções</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🗓️</span>
+                <span>Linha do tempo</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🔐</span>
+                <span>Decifre o código</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🧪</span>
+                <span>Experimento virtual</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🏆</span>
+                <span>Torneio de perguntas</span>
+              </a>
+            </li>
+            <li class="nav-menu__item">
+              <a href="#" class="nav-menu__link">
+                <span class="nav-menu__icon">🪐</span>
+                <span>Exploração temática</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Rodapé fixo com informações dos usuários e botão sair -->
+        <div class="sidebar-footer">
+          <div class="user-info">
+            <div class="user-info__avatar">👤</div>
+            <span class="user-info__name">{{.Data.Student1}}</span>
+          </div>
+
+          {{if .Data.Student2}}
+          <div class="user-info">
+            <div class="user-info__avatar">👤</div>
+            <span class="user-info__name">{{.Data.Student2}}</span>
+          </div>
+          {{end}}
+
+          <a href="#" id="closeSession" class="nav-menu__link">
+            <span class="nav-menu__icon">🚪</span>
+            <span>Sair</span>
+          </a>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="header">
+          <!-- Botão Menu Hambúrguer agora dentro do header -->
+          <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+            ☰
+          </button>
+          <h1 class="header__title">Nome da atividade em execução</h1>
+        </header>
+        <div>Área da atividade</div>
+      </main>
+    </div>
   </body>
+
+  <script>
+    const className = {{.Data.ClassName}};
+    {{.JS}}
+  </script>
 </html>
 {{end}}

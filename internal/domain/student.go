@@ -11,7 +11,7 @@ type Student struct {
 // Simulação de validação (substituir por consulta ao banco de dados)
 func ValidateStudent(name, class string) bool {
     // Exemplo: apenas alunos da turma "A" são válidos
-    if name == "RMS" || name == "GMS" && class == "5A" {
+    if (name == "RMS" || name == "GMS") && class == "5" {
         fmt.Println("Model(domain)", name, "- ", class)
         return true
     }

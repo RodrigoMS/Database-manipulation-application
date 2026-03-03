@@ -1,6 +1,6 @@
 {{ define "Index"}}
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +10,16 @@
         background-color: #1c1c1c;
         color: #fff;
       }
+
+      a {
+        color: #fff;
+        text-decoration: none;
+        margin: 5px 0;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
     </style>
   </head>
   <body>
@@ -17,6 +27,16 @@
     <p>Versão: {{.Data.ServerVersion}}</p>
     <p>Máx conexões: {{.Data.MaxConnections}}</p>
     <p>Conexões abertas: {{.Data.OpenedConnections}}</p>
+
+    <div style="display: flex; flex-direction: column">
+      <a href="/student-login/1">Login Estudante</a>
+      <a href="/student-login/2">Login Estudante</a>
+      <a href="/student-login/3">Login Estudante</a>
+      <a href="/student-login/4">Login Estudante</a>
+      <a href="/student-login/5">Login Estudante</a>
+      <br />
+      <a href="/student-dashboard">Dashboard</a>
+    </div>
   </body>
 </html>
 {{end}}

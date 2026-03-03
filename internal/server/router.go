@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/RodrigoMS/app/cmd/internal/handlers"
-	"github.com/RodrigoMS/app/cmd/internal/views"
+	//"github.com/RodrigoMS/app/cmd/internal/views"
 	//"github.com/RodrigoMS/app/cmd/internal/web"
 )
 
@@ -24,7 +24,9 @@ func routes() *http.ServeMux {
 
 	router.HandleFunc("GET /database-info", handlers.GetDatabaseInfo)
 
-	router.HandleFunc("/", views.HandleNotFound)
+	router.HandleFunc("/", handlers.GetDatabaseInfo)
+
+	//router.HandleFunc("/", views.HandleNotFound)
 
 	//web.SetupEmbeddedStatic(router)
 

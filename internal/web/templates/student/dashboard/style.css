@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+nav-menu-container
+
 /* Reset e estilos globais */
 * {
   margin: 0;
@@ -27,6 +29,35 @@ body {
   position: relative;
 }
 
+/* Botão toggle para desktop (encolher/expandir sidebar) */
+.desktop-toggle {
+  position: absolute;
+  left: 320px;
+  top: calc(50% + 35px);
+  transform: translateY(-50%);
+  width: 24px;
+  height: 89%;
+  background: #252525;
+  border: none;
+  border-radius: 0 12px 12px 0;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1000;
+  transition:
+    left 0.3s ease,
+    background 0.3s ease,
+    width 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.desktop-toggle:hover {
+  background: #3a3a3a;
+  color: white;
+}
+
 /* Bloco: sidebar */
 .sidebar {
   width: 320px;
@@ -36,12 +67,33 @@ body {
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition:
+    width 0.3s ease,
+    transform 0.3s ease;
   position: relative;
   z-index: 999;
+  flex-shrink: 0;
 }
 
-/* Botão fechar do sidebar - visível apenas em mobile */
+/* Sidebar totalmente oculta */
+.sidebar.collapsed {
+  width: 0;
+  min-width: 0;
+  border-right: none;
+}
+
+.sidebar.collapsed .sidebar__logo,
+.sidebar.collapsed .nav-menu-container,
+.sidebar.collapsed .sidebar-footer {
+  display: none;
+}
+
+/* Quando a sidebar está colapsada, o botão fica na extremidade esquerda */
+.sidebar.collapsed ~ .desktop-toggle {
+  left: 0 !important;
+}
+
+/* Botão fechar do sidebar (mobile) */
 .sidebar__close {
   display: none;
   position: absolute;
@@ -81,15 +133,7 @@ body {
   align-items: center;
   gap: 10px;
   position: relative;
-}
-
-.sidebar__logo span {
-  background: #4caf50;
-  color: #1c1c1c;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-left: 10px;
+  white-space: nowrap;
 }
 
 /* Container do menu com scroll */
@@ -123,6 +167,26 @@ body {
   font-weight: 500;
   font-size: 14px;
   border: 1px solid transparent;
+  position: relative;
+}
+
+/* Pontuação da atividade */
+.nav-menu__score {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  color: #4caf50;
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Checkmark para atividades sem pontuação */
+.nav-menu__check {
+  margin-left: auto;
+  font-size: 16px;
+  color: #4caf50;
+  font-weight: bold;
 }
 
 /* Modificador: nav-menu__link ativo */
@@ -169,6 +233,7 @@ body {
   margin-bottom: 12px;
   border: 1px solid #3a3a3a;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .user-info:hover {
@@ -205,18 +270,13 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  color: #e0e0e0;
-  text-decoration: none;
-  border-radius: 12px;
-  transition: all 0.3s ease;
+  padding: 12px;
   background-color: #2a2a2a;
+  border-radius: 12px;
+  margin-bottom: 12px;
   border: 1px solid #3a3a3a;
-  width: 100%;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 500;
-  margin-top: 10px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 #closeSession:hover {
@@ -237,17 +297,17 @@ body {
 }
 
 .nav-menu-container::-webkit-scrollbar-track {
-  background: #2a2a2a;
+  background: #252525;
   border-radius: 3px;
 }
 
 .nav-menu-container::-webkit-scrollbar-thumb {
-  background: #4caf50;
+  background: #3a3a3a;
   border-radius: 3px;
 }
 
 .nav-menu-container::-webkit-scrollbar-thumb:hover {
-  background: #45a049;
+  background: #3a3a3a;
 }
 
 /* Bloco: main-content */
@@ -255,10 +315,18 @@ body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  padding: 25px 30px;
+  padding-left: 27px;
+  padding-right: 12px;
+  padding-bottom: 20px;
   overflow-y: auto;
   background: linear-gradient(135deg, #1c1c1c 0%, #222 100%);
-  transition: all 0.3s ease;
+  transition: width 0.3s ease;
+  width: calc(100% - 320px);
+}
+
+/* Quando sidebar está colapsada, main-content ocupa toda largura */
+.sidebar.collapsed ~ .main-content {
+  width: 100%;
 }
 
 /* Bloco: header */
@@ -267,11 +335,12 @@ body {
   display: flex;
   align-items: center;
   gap: 15px;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   border-bottom: 2px solid #2f2f2f;
+  flex-wrap: wrap;
 }
 
-/* Botão Menu Hambúrguer - agora dentro do header */
+/* Botão Menu Hambúrguer - mobile */
 .menu-toggle {
   display: none;
   background: #4caf50;
@@ -295,16 +364,66 @@ body {
   box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
 }
 
-.menu-toggle:active {
-  transform: scale(0.95);
-}
-
 /* Elemento: título do header */
 .header__title {
   color: #4caf50;
   font-size: 24px;
   font-weight: 600;
   flex: 1;
+  min-width: 200px;
+}
+
+/* Pontuação total - tamanho fixo */
+.header__score {
+  color: white;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.header__score span {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  min-width: 45px;
+  text-align: right;
+}
+
+/* Botão próxima atividade */
+.next-button {
+  background: #333;
+  color: #4caf50;
+  border: 2px solid #4caf50;
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.next-button:hover:not(:disabled) {
+  background: #4caf50;
+  color: white;
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.next-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #666;
+  color: #666;
 }
 
 /* Área da atividade */
@@ -313,15 +432,17 @@ body {
   background-color: #252525;
   border: 1px solid #2f2f2f;
   border-radius: 15px;
-  padding: 25px;
+  padding: 1px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   min-height: 500px;
 }
 
-.main-content > div:last-child:hover {
-  border-color: #4caf50;
-  box-shadow: 0 12px 28px rgba(76, 175, 80, 0.15);
+.activity-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 15px;
 }
 
 /* Scrollbar personalizada para o conteúdo principal */
@@ -344,7 +465,7 @@ body {
   background: #45a049;
 }
 
-/* Overlay para quando o menu estiver aberto */
+/* Overlay para quando o menu estiver aberto em mobile */
 .sidebar-overlay {
   display: none;
   position: fixed;
@@ -366,9 +487,24 @@ body {
 }
 
 /* Responsividade */
+@media (min-width: 769px) {
+  .desktop-toggle {
+    display: flex;
+  }
+
+  /* Ajusta posição do toggle quando sidebar está colapsada */
+  .sidebar.collapsed ~ .desktop-toggle {
+    left: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .menu-toggle {
     display: flex;
+  }
+
+  .desktop-toggle {
+    display: none;
   }
 
   .sidebar {
@@ -377,10 +513,23 @@ body {
     left: 0;
     transform: translateX(-100%);
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+    width: 85%;
+    max-width: 320px;
   }
 
   .sidebar.open {
     transform: translateX(0);
+  }
+
+  .sidebar.collapsed {
+    width: 85%;
+    max-width: 320px;
+  }
+
+  .sidebar.collapsed .sidebar__logo,
+  .sidebar.collapsed .nav-menu-container,
+  .sidebar.collapsed .sidebar-footer {
+    display: flex;
   }
 
   .sidebar__close {
@@ -393,6 +542,7 @@ body {
 
   .main-content {
     padding: 20px 15px;
+    width: 100%;
   }
 
   .header {
@@ -401,139 +551,40 @@ body {
 
   .header__title {
     font-size: 20px;
+    min-width: 150px;
+  }
+
+  .header__score {
+    padding: 8px 15px;
+    font-size: 16px;
+    min-width: 120px;
+  }
+
+  .header__score span {
+    font-size: 20px;
+    min-width: 35px;
+  }
+
+  .next-button {
+    padding: 8px 15px;
+    font-size: 14px;
   }
 }
 
 @media (max-width: 480px) {
-  .menu-toggle {
-    width: 40px;
-    height: 40px;
-    font-size: 22px;
-  }
-
-  .sidebar {
-    width: 85%;
-    max-width: 320px;
+  .header {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .header__title {
     font-size: 18px;
+    text-align: center;
   }
 
-  .main-content > div:last-child {
-    padding: 15px;
+  .header__score,
+  .next-button {
+    width: 100%;
+    justify-content: center;
   }
-
-  .sidebar__close {
-    top: 15px;
-    right: 15px;
-    width: 35px;
-    height: 35px;
-    font-size: 20px;
-  }
-}
-
-/* Animações */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.nav-menu__item {
-  animation: slideIn 0.3s ease forwards;
-  opacity: 0;
-}
-
-.nav-menu__item:nth-child(1) {
-  animation-delay: 0.05s;
-}
-.nav-menu__item:nth-child(2) {
-  animation-delay: 0.08s;
-}
-.nav-menu__item:nth-child(3) {
-  animation-delay: 0.11s;
-}
-.nav-menu__item:nth-child(4) {
-  animation-delay: 0.14s;
-}
-.nav-menu__item:nth-child(5) {
-  animation-delay: 0.17s;
-}
-.nav-menu__item:nth-child(6) {
-  animation-delay: 0.2s;
-}
-.nav-menu__item:nth-child(7) {
-  animation-delay: 0.23s;
-}
-.nav-menu__item:nth-child(8) {
-  animation-delay: 0.26s;
-}
-.nav-menu__item:nth-child(9) {
-  animation-delay: 0.29s;
-}
-.nav-menu__item:nth-child(10) {
-  animation-delay: 0.32s;
-}
-.nav-menu__item:nth-child(11) {
-  animation-delay: 0.35s;
-}
-.nav-menu__item:nth-child(12) {
-  animation-delay: 0.38s;
-}
-.nav-menu__item:nth-child(13) {
-  animation-delay: 0.41s;
-}
-.nav-menu__item:nth-child(14) {
-  animation-delay: 0.44s;
-}
-.nav-menu__item:nth-child(15) {
-  animation-delay: 0.47s;
-}
-.nav-menu__item:nth-child(16) {
-  animation-delay: 0.5s;
-}
-.nav-menu__item:nth-child(17) {
-  animation-delay: 0.53s;
-}
-.nav-menu__item:nth-child(18) {
-  animation-delay: 0.56s;
-}
-.nav-menu__item:nth-child(19) {
-  animation-delay: 0.59s;
-}
-.nav-menu__item:nth-child(20) {
-  animation-delay: 0.62s;
-}
-.nav-menu__item:nth-child(21) {
-  animation-delay: 0.65s;
-}
-.nav-menu__item:nth-child(22) {
-  animation-delay: 0.68s;
-}
-.nav-menu__item:nth-child(23) {
-  animation-delay: 0.71s;
-}
-.nav-menu__item:nth-child(24) {
-  animation-delay: 0.74s;
-}
-.nav-menu__item:nth-child(25) {
-  animation-delay: 0.77s;
-}
-.nav-menu__item:nth-child(26) {
-  animation-delay: 0.8s;
-}
-.nav-menu__item:nth-child(27) {
-  animation-delay: 0.83s;
-}
-.nav-menu__item:nth-child(28) {
-  animation-delay: 0.86s;
-}
-.nav-menu__item:nth-child(29) {
-  animation-delay: 0.89s;
 }

@@ -11,7 +11,12 @@
   </head>
   <body>
     <div class="dashboard-container">
-      <!-- Overlay para fechar o menu -->
+      <!-- Botão toggle para desktop (encolher/expandir sidebar) -->
+      <button class="desktop-toggle" id="desktopToggle" title="Encolher menu">
+        ◀
+      </button>
+
+      <!-- Overlay para fechar o menu em mobile -->
       <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
       <!-- Sidebar -->
@@ -29,179 +34,302 @@
 
         <!-- Container com scroll apenas para o menu -->
         <div class="nav-menu-container">
-          <ul class="nav-menu">
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link nav-menu__link--active">
+          <ul class="nav-menu" id="activityMenu">
+            <li class="nav-menu__item" data-activity-id="1" data-score="0">
+              <a
+                href="#"
+                class="nav-menu__link nav-menu__link--active"
+                data-activity="Introdução da aula"
+              >
                 <span class="nav-menu__icon">📖</span>
                 <span>Introdução da aula</span>
+                <span class="nav-menu__check">✓</span>
+                <span class="nav-menu__score" style="display: none">0</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="2" data-score="10">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Quiz interativo"
+              >
                 <span class="nav-menu__icon">❓</span>
                 <span>Quiz interativo</span>
+                <span class="nav-menu__score">10</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="3" data-score="5">
+              <a href="#" class="nav-menu__link" data-activity="Caça-palavras">
                 <span class="nav-menu__icon">🔍</span>
                 <span>Caça-palavras</span>
+                <span class="nav-menu__score">5</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="4" data-score="3">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Palavras cruzadas"
+              >
                 <span class="nav-menu__icon">🔄</span>
                 <span>Palavras cruzadas</span>
+                <span class="nav-menu__score">3</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="5" data-score="9">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Jogo da memória"
+              >
                 <span class="nav-menu__icon">🎴</span>
                 <span>Jogo da memória</span>
+                <span class="nav-menu__score">9</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="6" data-score="0">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Arrasta e solta"
+              >
                 <span class="nav-menu__icon">🖱️</span>
                 <span>Arrasta e solta</span>
+                <span class="nav-menu__check">✓</span>
+                <span class="nav-menu__score" style="display: none">0</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="7" data-score="20">
+              <a href="#" class="nav-menu__link" data-activity="Quebra-cabeça">
                 <span class="nav-menu__icon">🧩</span>
                 <span>Quebra-cabeça</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="8" data-score="8">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Jogo de tabuleiro"
+              >
                 <span class="nav-menu__icon">🎲</span>
                 <span>Jogo de tabuleiro</span>
+                <span class="nav-menu__score">8</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="9" data-score="5">
+              <a href="#" class="nav-menu__link" data-activity="Jogo da velha">
                 <span class="nav-menu__icon">🃏</span>
                 <span>Jogo da velha</span>
+                <span class="nav-menu__score">5</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="10" data-score="4">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Complete a frase"
+              >
                 <span class="nav-menu__icon">⚡</span>
                 <span>Complete a frase</span>
+                <span class="nav-menu__score">4</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="11" data-score="3">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Associação de ideias"
+              >
                 <span class="nav-menu__icon">🎯</span>
                 <span>Associação de ideias</span>
+                <span class="nav-menu__score">3</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="12" data-score="10">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Sequência lógica"
+              >
                 <span class="nav-menu__icon">🔢</span>
                 <span>Sequência lógica</span>
+                <span class="nav-menu__score">10</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="13" data-score="7">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Colorir interativo"
+              >
                 <span class="nav-menu__icon">🎨</span>
                 <span>Colorir interativo</span>
+                <span class="nav-menu__score">7</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="14" data-score="15">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Desafio contra o tempo"
+              >
                 <span class="nav-menu__icon">⏰</span>
                 <span>Desafio contra o tempo</span>
+                <span class="nav-menu__score">15</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="15" data-score="6">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Classificação de objetos"
+              >
                 <span class="nav-menu__icon">🗂️</span>
                 <span>Classificação de objetos</span>
+                <span class="nav-menu__score">6</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="16" data-score="12">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Role-play (diálogos)"
+              >
                 <span class="nav-menu__icon">🎭</span>
                 <span>Role-play (diálogos)</span>
+                <span class="nav-menu__score">12</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="17" data-score="20">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Enquete em tempo real"
+              >
                 <span class="nav-menu__icon">📊</span>
                 <span>Enquete em tempo real</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="18" data-score="20">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Desafio de matemática"
+              >
                 <span class="nav-menu__icon">🧮</span>
                 <span>Desafio de matemática</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="19" data-score="20">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Mapa interativo"
+              >
                 <span class="nav-menu__icon">🌍</span>
                 <span>Mapa interativo</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="20" data-score="20">
+              <a href="#" class="nav-menu__link" data-activity="Jogo musical">
                 <span class="nav-menu__icon">🎼</span>
                 <span>Jogo musical</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="21" data-score="20">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Formação de palavras"
+              >
                 <span class="nav-menu__icon">🔠</span>
                 <span>Formação de palavras</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="22" data-score="20">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Verdadeiro ou falso"
+              >
                 <span class="nav-menu__icon">⚖️</span>
                 <span>Verdadeiro ou falso</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="23" data-score="20">
+              <a href="#" class="nav-menu__link" data-activity="Roda da sorte">
                 <span class="nav-menu__icon">🔄</span>
                 <span>Roda da sorte</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="24" data-score="20">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Medidas e proporções"
+              >
                 <span class="nav-menu__icon">📏</span>
                 <span>Medidas e proporções</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="25" data-score="20">
+              <a href="#" class="nav-menu__link" data-activity="Linha do tempo">
                 <span class="nav-menu__icon">🗓️</span>
                 <span>Linha do tempo</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="26" data-score="20">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Decifre o código"
+              >
                 <span class="nav-menu__icon">🔐</span>
                 <span>Decifre o código</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="27" data-score="20">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Experimento virtual"
+              >
                 <span class="nav-menu__icon">🧪</span>
                 <span>Experimento virtual</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="28" data-score="20">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Torneio de perguntas"
+              >
                 <span class="nav-menu__icon">🏆</span>
                 <span>Torneio de perguntas</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
-            <li class="nav-menu__item">
-              <a href="#" class="nav-menu__link">
+            <li class="nav-menu__item" data-activity-id="29" data-score="20">
+              <a
+                href="#"
+                class="nav-menu__link"
+                data-activity="Exploração temática"
+              >
                 <span class="nav-menu__icon">🪐</span>
                 <span>Exploração temática</span>
+                <span class="nav-menu__score">20</span>
               </a>
             </li>
           </ul>
@@ -231,13 +359,28 @@
       <!-- Main Content -->
       <main class="main-content">
         <header class="header">
-          <!-- Botão Menu Hambúrguer agora dentro do header -->
+          <!-- Botão Menu Hambúrguer - mobile -->
           <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
             ☰
           </button>
-          <h1 class="header__title">Nome da atividade em execução</h1>
+          <h1 class="header__title" id="currentActivityTitle">
+            Introdução da aula
+          </h1>
+          <div class="header__score">
+            Pontuação: <span id="totalScore">0</span>
+          </div>
+          <button class="next-button" id="nextActivity">
+            Próxima Atividade
+          </button>
         </header>
-        <div>Área da atividade</div>
+        <div id="activityArea">
+          <!-- Área da atividade - conteúdo será carregado aqui -->
+          <iframe
+            class="activity-frame"
+            src="/introducao.html"
+            frameborder="0"
+          ></iframe>
+        </div>
       </main>
     </div>
   </body>
